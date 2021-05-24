@@ -1,0 +1,53 @@
+Experiment parameters 
+
++./test_bed_run_hierarchy_small.sh:21): main(): RoundTripTimeMs=10
++./test_bed_run_hierarchy_small.sh:22): main(): FullBandwidthMbps=100
++./test_bed_run_hierarchy_small.sh:23): main(): AuxBandwidthMbps=1.5
++./test_bed_run_hierarchy_small.sh:25): main(): Qdisc=hfsc
++./test_bed_run_hierarchy_small.sh:27): main(): TxSpeedIperfMbps=100
++./test_bed_run_hierarchy_small.sh:28): main(): UpperLimitKbps=100
++./test_bed_run_hierarchy_small.sh:31): main(): ExperimentScale=1.0
+++./test_bed_run_hierarchy_small.sh:32): main(): bc -l
++./test_bed_run_hierarchy_small.sh:32): main(): ExperimentStepSeconds=1.0
+++./test_bed_run_hierarchy_small.sh:33): main(): bc -l
++./test_bed_run_hierarchy_small.sh:33): main(): ExperimentOffsetSeconds=20.0
+++./test_bed_run_hierarchy_small.sh:34): main(): bc -l
++./test_bed_run_hierarchy_small.sh:34): main(): ExperimentDurationSeconds=60.0
++./test_bed_run_hierarchy_small.sh:36): main(): PeerInterface=enp0s8
++./test_bed_run_hierarchy_small.sh:37): main(): LocalInterface=enp0s8
++./test_bed_run_hierarchy_small.sh:39): main(): PeerAddress=192.168.57.2
++./test_bed_run_hierarchy_small.sh:42): main(): PacketSizeBytes=1460
++./test_bed_run_hierarchy_small.sh:43): main(): BufferSizeBytes=1000000
++./test_bed_run_hierarchy_small.sh:45): main(): UdpPortRangeMin=50000
++./test_bed_run_hierarchy_small.sh:46): main(): UdpPortRangeMax=50002
++./test_bed_run_hierarchy_small.sh:49): main(): PeerUserName=vm1
++./test_bed_run_hierarchy_small.sh:50): main(): LocalSudoPassword=1234
++./test_bed_run_hierarchy_small.sh:51): main(): PeerSudoPassword=1234
++./test_bed_run_hierarchy_small.sh:53): main(): sudo -S true
++./test_bed_run_hierarchy_small.sh:53): main(): echo 1234
++./test_bed_run_hierarchy_small.sh:56): main(): sudo tc qdisc del dev enp0s8 root
++./test_bed_run_hierarchy_small.sh:58): main(): ssh vm1@192.168.57.2 'echo 1234 | sudo -S   tc qdisc replace dev enp0s8 root netem delay 10ms'
+[sudo] password for vm1: +./test_bed_run_hierarchy_small.sh:62): main(): case "$Qdisc" in
++./test_bed_run_hierarchy_small.sh:64): main(): sudo tc qdisc add dev enp0s8 root handle 1: hfsc default 999
++./test_bed_run_hierarchy_small.sh:66): main(): sudo tc class add dev enp0s8 parent 1: classid 1:1 hfsc ls rate 100mbit ul rate 100mbit
++./test_bed_run_hierarchy_small.sh:67): main(): sudo tc class add dev enp0s8 parent 1:1 classid 1:999 hfsc ls rate 1.5mbit ul rate 1.5mbit
++./test_bed_run_hierarchy_small.sh:69): main(): sudo tc class add dev enp0s8 parent 1:1 classid 1:10 hfsc ls rate 50mbit ul rate 100mbit
++./test_bed_run_hierarchy_small.sh:70): main(): sudo tc class add dev enp0s8 parent 1:1 classid 1:20 hfsc ls rate 50mbit ul rate 100mbit
++./test_bed_run_hierarchy_small.sh:71): main(): sudo tc filter add dev enp0s8 prio 1 u32 match ip dport 50002 0xffff flowid 1:20
++./test_bed_run_hierarchy_small.sh:73): main(): sudo tc class add dev enp0s8 parent 1:10 classid 1:11 hfsc ls rate 20mbit ul rate 100mbit
++./test_bed_run_hierarchy_small.sh:74): main(): sudo tc filter add dev enp0s8 prio 1 u32 match ip dport 50000 0xffff flowid 1:11
++./test_bed_run_hierarchy_small.sh:75): main(): sudo tc class add dev enp0s8 parent 1:10 classid 1:12 hfsc ls rate 30mbit ul rate 100mbit
++./test_bed_run_hierarchy_small.sh:76): main(): sudo tc filter add dev enp0s8 prio 1 u32 match ip dport 50001 0xffff flowid 1:12
++./test_bed_run_hierarchy_small.sh:102): main(): ssh vm1@192.168.57.2 'killall iperf3 2>&- || true'
++./test_bed_run_hierarchy_small.sh:103): main(): (( port=50000 ))
++./test_bed_run_hierarchy_small.sh:103): main(): (( port<=50002 ))
++./test_bed_run_hierarchy_small.sh:103): main(): (( port++ ))
++./test_bed_run_hierarchy_small.sh:103): main(): (( port<=50002 ))
++./test_bed_run_hierarchy_small.sh:103): main(): (( port++ ))
++./test_bed_run_hierarchy_small.sh:103): main(): (( port<=50002 ))
++./test_bed_run_hierarchy_small.sh:103): main(): (( port++ ))
++./test_bed_run_hierarchy_small.sh:103): main(): (( port<=50002 ))
++./test_bed_run_hierarchy_small.sh:109): main(): exec
++./test_bed_run_hierarchy_small.sh:104): main(): ssh vm1@192.168.57.2 'iperf3 -s -p50002 -V -i1.0 -1 --json'
++./test_bed_run_hierarchy_small.sh:104): main(): ssh vm1@192.168.57.2 'iperf3 -s -p50001 -V -i1.0 -1 --json'
++./test_bed_run_hierarchy_small.sh:104): main(): ssh vm1@192.168.57.2 'iperf3 -s -p50000 -V -i1.0 -1 --json'

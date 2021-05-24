@@ -1,0 +1,51 @@
+Experiment parameters 
+
++./test_bed_run_2_flows.sh:21): main(): RoundTripTimeMs=10
++./test_bed_run_2_flows.sh:22): main(): FullBandwidthMbps=100
++./test_bed_run_2_flows.sh:23): main(): AuxBandwidthMbps=1.5
++./test_bed_run_2_flows.sh:25): main(): Qdisc=hfsc
++./test_bed_run_2_flows.sh:27): main(): TxSpeedIperfMbps=110
++./test_bed_run_2_flows.sh:28): main(): UpperLimitMbps=100
++./test_bed_run_2_flows.sh:31): main(): LS1=64
++./test_bed_run_2_flows.sh:32): main(): LS2=36
++./test_bed_run_2_flows.sh:34): main(): UL1=80
++./test_bed_run_2_flows.sh:35): main(): UL2=40
++./test_bed_run_2_flows.sh:37): main(): ExperimentScale=1.0
+++./test_bed_run_2_flows.sh:38): main(): bc -l
++./test_bed_run_2_flows.sh:38): main(): ExperimentStepSeconds=1.0
+++./test_bed_run_2_flows.sh:39): main(): bc -l
++./test_bed_run_2_flows.sh:39): main(): ExperimentOffsetSeconds=20.0
+++./test_bed_run_2_flows.sh:40): main(): bc -l
++./test_bed_run_2_flows.sh:40): main(): ExperimentDurationSeconds=60.0
++./test_bed_run_2_flows.sh:42): main(): PeerInterface=enp0s8
++./test_bed_run_2_flows.sh:43): main(): LocalInterface=enp0s8
++./test_bed_run_2_flows.sh:45): main(): PeerAddress=192.168.57.2
++./test_bed_run_2_flows.sh:48): main(): PacketSizeBytes=1460
++./test_bed_run_2_flows.sh:49): main(): BufferSizeBytes=1000000
++./test_bed_run_2_flows.sh:51): main(): UdpPortRangeMin=50000
++./test_bed_run_2_flows.sh:52): main(): UdpPortRangeMax=50001
++./test_bed_run_2_flows.sh:55): main(): PeerUserName=vm1
++./test_bed_run_2_flows.sh:56): main(): LocalSudoPassword=1234
++./test_bed_run_2_flows.sh:57): main(): PeerSudoPassword=1234
++./test_bed_run_2_flows.sh:59): main(): sudo -S true
++./test_bed_run_2_flows.sh:59): main(): echo 1234
++./test_bed_run_2_flows.sh:62): main(): ssh vm1@192.168.57.2 'echo 1234 | sudo -S   tc qdisc replace dev enp0s8 root netem delay 10ms'
+[sudo] password for vm1: +./test_bed_run_2_flows.sh:67): main(): sudo tc qdisc del dev enp0s8 root
++./test_bed_run_2_flows.sh:69): main(): case "$Qdisc" in
++./test_bed_run_2_flows.sh:71): main(): sudo tc qdisc add dev enp0s8 root handle 1: hfsc default 999
++./test_bed_run_2_flows.sh:73): main(): sudo tc class add dev enp0s8 parent 1: classid 1:1 hfsc ls rate 100mbit ul rate 100mbit
++./test_bed_run_2_flows.sh:74): main(): sudo tc class add dev enp0s8 parent 1:1 classid 1:999 hfsc ls rate 1.5mbit ul rate 1.5mbit
++./test_bed_run_2_flows.sh:77): main(): sudo tc class add dev enp0s8 parent 1:1 classid 1:11 hfsc ls rate 64mbit ul rate 80mbit
++./test_bed_run_2_flows.sh:78): main(): sudo tc filter add dev enp0s8 prio 1 u32 match ip dport 50000 0xffff flowid 1:11
++./test_bed_run_2_flows.sh:79): main(): sudo tc class add dev enp0s8 parent 1:1 classid 1:12 hfsc ls rate 36mbit ul rate 40mbit
++./test_bed_run_2_flows.sh:80): main(): sudo tc filter add dev enp0s8 prio 1 u32 match ip dport 50001 0xffff flowid 1:12
++./test_bed_run_2_flows.sh:103): main(): ssh vm1@192.168.57.2 'killall iperf3 2>&- || true'
++./test_bed_run_2_flows.sh:104): main(): (( port=50000 ))
++./test_bed_run_2_flows.sh:104): main(): (( port<=50001 ))
++./test_bed_run_2_flows.sh:104): main(): (( port++ ))
++./test_bed_run_2_flows.sh:104): main(): (( port<=50001 ))
++./test_bed_run_2_flows.sh:104): main(): (( port++ ))
++./test_bed_run_2_flows.sh:104): main(): (( port<=50001 ))
++./test_bed_run_2_flows.sh:110): main(): exec
++./test_bed_run_2_flows.sh:105): main(): ssh vm1@192.168.57.2 'iperf3 -s -p50001 -V -i1.0 -1 --json'
++./test_bed_run_2_flows.sh:105): main(): ssh vm1@192.168.57.2 'iperf3 -s -p50000 -V -i1.0 -1 --json'
