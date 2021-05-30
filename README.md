@@ -2,7 +2,7 @@
 
 ### General
 
-The presented schedulers map the parameters in hClock's (R-reservation, L-limit, S-shares) [1] style, to the parameters used in HFSC [3] and HTB [4]. The bandwidth distribution implemented according to [SUM(R, S)](sumrs-semantics) or [ MAX(R, S)](maxrs-semantics) semantics.
+The presented schedulers map the parameters in hClock's (R-reservation, L-limit, S-shares) [1] style, to the parameters used in HFSC [3] and HTB [4]. The bandwidth distribution implemented according to [SUM(R, S)](#sumrs-semantics) or [ MAX(R, S)](#maxrs-semantics) semantics.
 
 **Properties:**
 
