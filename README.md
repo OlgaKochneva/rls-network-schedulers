@@ -1,4 +1,5 @@
 # rls-network-schedulers
+The project is under development and presented ony as a testbed. All info and sources are provided in [/testbed](testbed) folder.
 
 ### General
 
