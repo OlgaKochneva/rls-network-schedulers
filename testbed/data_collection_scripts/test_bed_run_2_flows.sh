@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Author: Sosnin V.V. 
+
 # Debug settings for the entire script
 export PS4='+${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }' # show the line number of executed commands
 set -o nounset  # forbid using uninitialized variables

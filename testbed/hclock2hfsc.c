@@ -3,6 +3,8 @@
 #include <stdlib.h>
 
 /*
+Authors: Sosnin V.V. & Kochneva O.R.
+
 File contents:
 1. Function that maps hClock parameters to HFSC/HTB parameters according to SUM semantics.
 2. Function that maps hClock parameters to HFSC/HTB parameters according to MAX semantics.
@@ -364,7 +366,7 @@ int main() {
     // hClock parameters are filled in randomly.
     // Then hClock-to-HFSC mapping is called.
     for (i = 0; i < amount_of_generic_test_runs; i++) {
-        printf("Test no: %d\n", i);
+        // printf("Test no: %d\n", i);
         amount_of_classes = 2 + rand()%10;
         channel_throughput = 1 + rand()%1000;
         sum_of_reservations = 0;
@@ -475,116 +477,4 @@ int main() {
     map_hclock_to_hfsc_and_htb_max(channel_throughput, classes, amount_of_classes);
     print_hclock_mappings(channel_throughput, classes, amount_of_classes);
 
-    // Example of small hierarchy
-    amount_of_classes = 2;
-    channel_throughput = 100;
-    //---------------------------------> R, L, S
-    classes[0] = (struct hclock_mapping){20, 100, 1}; // A
-    classes[1] = (struct hclock_mapping){0, 100, 1}; // B
-
-
-    printf("\n-----------------SUM-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_sum(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-    printf("\n-----------------MAX-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_max(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-
-    channel_throughput = 60;
-    classes[0] = (struct hclock_mapping){20, channel_throughput, 1}; // C
-    classes[1] = (struct hclock_mapping){0, channel_throughput, 5};  // D
-
-    printf("\n-----------------SUM-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_sum(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-
-    channel_throughput = 50;
-    classes[0] = (struct hclock_mapping){20, channel_throughput, 1}; // C
-    classes[1] = (struct hclock_mapping){0, channel_throughput, 5};  // D
-    printf("\n-----------------MAX-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_max(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-
-    // Example from hClock paper DUM
-    amount_of_classes = 4;
-    channel_throughput = 9400;
-    //---------------------------------> R, L, S
-    classes[0] = (struct hclock_mapping){3000, 9400, 2};
-    classes[1] = (struct hclock_mapping){0, 9400, 4};
-    classes[2] = (struct hclock_mapping){2000, 9400, 1};
-    classes[3] = (struct hclock_mapping){0, 9400, 2}; 
-    printf("\n-----------------p1,p2,p3,v6------------------\n");
-    map_hclock_to_hfsc_and_htb_sum(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-    struct hclock_mapping p1 = classes[0];
-    struct hclock_mapping p2 = classes[1];
-    struct hclock_mapping p3 = classes[2];
-    struct hclock_mapping v6 = classes[3];
-
-    //---------------------------------> R, L, S
-    amount_of_classes = 2;
-    channel_throughput = p1.hfsc_ls;
-    classes[0] = (struct hclock_mapping){0, p1.hfsc_ls, 2};
-    classes[1] = (struct hclock_mapping){0, p1.hfsc_ls, 1};
-    printf("\n-----------------v1, v2------------------\n");
-    map_hclock_to_hfsc_and_htb_sum(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-
-    
-    amount_of_classes = 1;
-    channel_throughput = p2.hfsc_ls;
-    classes[0] = (struct hclock_mapping){0, p2.hfsc_ls, 1};
-    printf("\n-----------------v3------------------\n");
-    map_hclock_to_hfsc_and_htb_sum(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-
-
-    amount_of_classes = 2;
-    channel_throughput = p3.hfsc_ls;
-    classes[0] = (struct hclock_mapping){0, p3.hfsc_ls, 1};
-    classes[1] = (struct hclock_mapping){1800, p3.hfsc_ls, 1};
-    printf("\n-----------------v4, v5------------------\n");
-    map_hclock_to_hfsc_and_htb_sum(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-
-
-    // Example from hClock paper
-    amount_of_classes = 4;
-    channel_throughput = 9400;
-    //---------------------------------> R, L, S
-    classes[0] = (struct hclock_mapping){3000, 9400, 2};
-    classes[1] = (struct hclock_mapping){0, 9400, 4};
-    classes[2] = (struct hclock_mapping){2000, 9400, 1};
-    classes[3] = (struct hclock_mapping){0, 9400, 2}; 
-    printf("\n-----------------MAX-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_max(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-    p1 = classes[0];
-    p2 = classes[1];
-    p3 = classes[2];
-    v6 = classes[3];
-
-    //---------------------------------> R, L, S
-    amount_of_classes = 2;
-    channel_throughput = p1.hfsc_ls;
-    classes[0] = (struct hclock_mapping){0, p1.hfsc_ls, 2};
-    classes[1] = (struct hclock_mapping){0, p1.hfsc_ls, 1};
-    printf("\n-----------------MAX-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_max(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-    
-    amount_of_classes = 1;
-    channel_throughput = p2.hfsc_ls;
-    classes[0] = (struct hclock_mapping){0, p2.hfsc_ls, 1};
-    printf("\n-----------------MAX-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_max(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
-
-    amount_of_classes = 2;
-    channel_throughput = p3.hfsc_ls;
-    classes[0] = (struct hclock_mapping){0, p3.hfsc_ls, 1};
-    classes[1] = (struct hclock_mapping){1800, p3.hfsc_ls, 1};
-    printf("\n-----------------MAX-semantics------------------\n");
-    map_hclock_to_hfsc_and_htb_max(channel_throughput, classes, amount_of_classes);
-    print_hclock_mappings(channel_throughput, classes, amount_of_classes);
 }

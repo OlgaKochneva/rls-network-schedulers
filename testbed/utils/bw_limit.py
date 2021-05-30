@@ -1,6 +1,8 @@
 import subprocess
 import argparse
+
 """
+Simple script to manage BW of virtual machines
 
 VBoxManage bandwidthctl "VM name" add Limit --type network --limit 20m
 VBoxManage modifyvm "VM name" --nicbandwidthgroup1 Limit
@@ -34,8 +36,7 @@ def remove_bw_limit(vms):
         print(output)
 
 
-vms = {"\"Ubuntu-18.04 Client\"": 2, "\"Ubuntu-18.04 Server\"": 2}
-
-limit_mbps = 100
-
-update_bw_limit(vms, limit_mbps)
+if __name__ == '__main__':
+    vms = {"\"Ubuntu-18.04 Client\"": 2, "\"Ubuntu-18.04 Server\"": 2}
+    limit_mbps = 100
+    update_bw_limit(vms, limit_mbps)
